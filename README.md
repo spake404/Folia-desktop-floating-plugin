@@ -1,0 +1,1 @@
+# Folia desktop floating plugin
