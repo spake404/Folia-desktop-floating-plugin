@@ -1,0 +1,12 @@
+[package]
+name = "folia-desktop-follow-helper"
+version = "0.1.0"
+edition = "2021"
+description = "Lightweight Windows Win32 desktop-layer Z-order and Win+D helper for Folia"
+
+[profile.release]
+opt-level = "s"
+strip = true
+lto = true
+codegen-units = 1
+panic = "abort"

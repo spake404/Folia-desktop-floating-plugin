@@ -1,0 +1,4 @@
+native/desktop-follow-helper/target/
+dist/
+node_modules/
+*.zip
