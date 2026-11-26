@@ -5,6 +5,7 @@
   "version": "0.2.0",
   "author": "spake404",
   "description": "在 Folia 托盘右键菜单新增独立的「跟随桌面」与「半穿透」选项：保留透明背景与自由尺寸，实现桌面跟随（含 Win+D、与窗口置顶互斥）与按区域智能半穿透（可操作区域正常点击、空白处自动穿透，与点击穿透互斥）。",
+  "preview": "preview.png",
   "main": "main.cjs",
   "client": "client.mjs",
   "folia": ">=0.7.22"
