@@ -4,27 +4,16 @@ import path from 'path';
 import { fileURLToPath } from 'url';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const helperCrateDir = path.join(rootDir, 'native', 'desktop-follow-helper');
 const modDir = path.join(rootDir, 'folia-desktop-follow');
-const modBinDir = path.join(modDir, 'bin');
-const exeName = 'folia-desktop-follow-helper.exe';
-const builtExe = path.join(helperCrateDir, 'target', 'release', exeName);
-const targetExe = path.join(modBinDir, exeName);
+const helperScript = path.join(modDir, 'helper', 'desktop-follow-helper.ps1');
 
-console.log('[build] Compiling Rust desktop-follow helper...');
-execFileSync('cargo', ['build', '--release'], {
-  cwd: helperCrateDir,
-  stdio: 'inherit',
-});
-
-if (!fs.existsSync(builtExe)) {
-  throw new Error(`Expected built helper at ${builtExe}`);
+if (!fs.existsSync(helperScript)) {
+  throw new Error(`Helper script not found at ${helperScript}`);
 }
 
-fs.mkdirSync(modBinDir, { recursive: true });
-fs.copyFileSync(builtExe, targetExe);
-const sizeKb = (fs.statSync(targetExe).size / 1024).toFixed(1);
-console.log(`[build] Copied helper to ${targetExe} (${sizeKb} KB)`);
+execFileSync(process.execPath, ['--check', path.join(modDir, 'main.cjs')], { stdio: 'inherit' });
+execFileSync(process.execPath, ['--check', path.join(modDir, 'client.mjs')], { stdio: 'inherit' });
+console.log('[build] Verified main.cjs, client.mjs, and pure-source PowerShell helper.');
 
 if (process.argv.includes('--zip')) {
   const distDir = path.join(rootDir, 'dist');

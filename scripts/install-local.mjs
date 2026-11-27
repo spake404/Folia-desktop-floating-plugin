@@ -4,10 +4,10 @@ import { fileURLToPath } from 'url';
 
 const rootDir = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const sourceDir = path.join(rootDir, 'folia-desktop-follow');
-const helperPath = path.join(sourceDir, 'bin', 'folia-desktop-follow-helper.exe');
+const helperPath = path.join(sourceDir, 'helper', 'desktop-follow-helper.ps1');
 
 if (!fs.existsSync(helperPath)) {
-  throw new Error(`Helper binary not found at ${helperPath}. Run "npm run build" first.`);
+  throw new Error(`Helper script not found at ${helperPath}.`);
 }
 
 const appData = process.env.APPDATA;
@@ -20,6 +20,12 @@ fs.mkdirSync(targetDir, { recursive: true });
 
 function copyTreeSmart(srcDir, dstDir) {
   fs.mkdirSync(dstDir, { recursive: true });
+  const sourceNames = new Set(fs.readdirSync(srcDir));
+  for (const existing of fs.readdirSync(dstDir, { withFileTypes: true })) {
+    if (!sourceNames.has(existing.name)) {
+      fs.rmSync(path.join(dstDir, existing.name), { recursive: true, force: true });
+    }
+  }
   for (const entry of fs.readdirSync(srcDir, { withFileTypes: true })) {
     const srcPath = path.join(srcDir, entry.name);
     const dstPath = path.join(dstDir, entry.name);
